@@ -1,9 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
 import * as schema from './schema'
+import { drizzle } from 'drizzle-orm/d1'
 
 export default function createDb(env: Env) {
-	const sql = postgres(env.DATABASE_URL)
-
-	return drizzle(sql, { schema })
+	return drizzle(env.DB, { schema })
 }

@@ -3,6 +3,7 @@ import signUp from './auth/sign-up'
 import corsHeaders from '../lib/cors'
 import validate from './auth/validate'
 import signOut from './auth/sign-out'
+import getTables from './orgs/get-tables'
 
 function handleHome() {
 	return new Response(JSON.stringify({ result: 'Yonorder Server is Running' }), {
@@ -20,7 +21,7 @@ function handleNotFound() {
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		const { pathname, searchParams } = new URL(request.url)
+		const { pathname } = new URL(request.url)
 
 		switch (pathname) {
 			case '/':
@@ -33,6 +34,12 @@ export default {
 				return validate(request, env, ctx)
 			case '/auth/sign-out':
 				return signOut(request, env, ctx)
+			case '/orgs/tables':
+				if (request.method === 'GET') {
+					return getTables(request, env, ctx)
+				} else {
+					return handleNotFound()
+				}
 			default:
 				return handleNotFound()
 		}
